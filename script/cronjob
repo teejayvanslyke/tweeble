@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + '/../lib/tweeble'
 
 game = Tweeble::Game.new
 game.play!
-sleep 24 * 60 * 60
+sleep 5 * 60
 game.tally!
 
 
