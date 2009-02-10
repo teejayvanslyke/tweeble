@@ -31,6 +31,7 @@ module Tweeble
       winning_reply = nil
       replies.each do |r| 
         reply = Tweeble::Reply.new(self.puzzle, r)
+        next unless reply.match?
         if winning_reply.nil?
           winning_reply = reply
         elsif reply.score > winning_reply.score
@@ -48,7 +49,6 @@ module Tweeble
 
     def initialize(puzzle, status)
       @puzzle = puzzle
-      puts status.inspect
       @text = status.text.gsub('#tweeble','').downcase.gsub(/[^a-z]/,'')
       @user = status.from_user
     end
@@ -139,9 +139,17 @@ module Tweeble
       @s.upcase
     end
 
+    def match?(reply)
+      s = self.to_s
+      reply.each_byte do |c|
+        return false unless s.include?(c)
+        s.sub!(c,'')
+      end
+      return true
+    end
+
     def random_char
       r = rand(1000) / 10
-      puts r
       acc = 0
       LETTER_FREQUENCIES.sort.each do |arr|
         acc += arr[1]
