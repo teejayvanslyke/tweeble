@@ -14,7 +14,7 @@ module Tweeble
     end
 
     def play!
-      @start = @twitter.update("*#{puzzle}*")
+      @start = @twitter.update("*#{puzzle.to_s.upcase}*")
     end
 
     def puzzle 
@@ -22,7 +22,7 @@ module Tweeble
     end
 
     def tally!
-      @twitter.update("*#{puzzle}* winner is @#{winning_reply.user} with '#{winning_reply.text}'")
+      @twitter.update("*#{puzzle.to_s.upcase}* winner is @#{winning_reply.user} with '#{winning_reply.text}'")
     end
 
     def winning_reply
@@ -136,12 +136,12 @@ module Tweeble
       return @s if @s
       @s = ''
       10.times { @s << random_char }
-      @s.upcase
+      @s
     end
 
     def match?(reply)
       s = self.to_s
-      reply.each_byte do |c|
+      reply.text.each_byte do |c|
         return false unless s.include?(c)
         s.sub!(c,'')
       end
